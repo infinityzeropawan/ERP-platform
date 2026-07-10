@@ -1,0 +1,1 @@
+-- Indexes added directly to schema, applied via prisma db push

@@ -1,0 +1,10 @@
+[Unit]
+Description=Buildroonix PostgreSQL backup
+
+[Service]
+Type=oneshot
+EnvironmentFile=/etc/buildroonix/backend.env
+Environment=BACKUP_DIR=/var/backups/buildroonix
+ExecStart=/opt/buildroonix/deploy/backup-postgres.sh
+User=buildroonix
+Group=buildroonix

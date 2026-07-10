@@ -1,0 +1,58 @@
+name: 🚀 Deploy to Production VPS
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: Build & Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      # ── Step 1: Checkout the pushed code ────────────────────────────────────
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      # ── Step 2: Setup SSH key ────────────────────────────────────────────────
+      - name: 🔑 Setup SSH
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.VPS_SSH_KEY }}
+
+      # ── Step 3: SSH into VPS and deploy ─────────────────────────────────────
+      - name: 🚀 Deploy to VPS
+        run: |
+          ssh -o StrictHostKeyChecking=no root@${{ secrets.VPS_HOST }} << 'DEPLOY'
+            set -e
+            echo "📦 Pulling latest code..."
+            cd /var/www/buildroonix-erp
+            git pull origin main
+
+            echo "🔧 Rebuilding backend..."
+            cd /var/www/buildroonix-erp/backend
+            npm install --legacy-peer-deps --silent
+            npm run build
+
+            echo "🎨 Rebuilding frontend..."
+            cd /var/www/buildroonix-erp
+            npm install --legacy-peer-deps --silent
+            npm run build
+
+            echo "♻️  Restarting apps with PM2..."
+            pm2 restart buildroonix-backend
+            pm2 restart buildroonix-frontend
+            pm2 save
+
+            echo "✅ Deployment complete!"
+            pm2 list
+          DEPLOY
+
+      - name: ✅ Success
+        if: success()
+        run: echo "🎉 Deployed successfully to http://buildroonix.com"
+
+      - name: ❌ Failed
+        if: failure()
+        run: echo "💥 Deployment FAILED. Check the logs above."

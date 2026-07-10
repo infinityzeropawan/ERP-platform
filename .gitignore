@@ -1,7 +1,38 @@
-node_modules
-.next
-backend/venv
-__pycache__
-*.pyc
+# Dependencies
+node_modules/
+backend/node_modules/
+
+# Build outputs (compiled on server — never commit)
+.next/
+backend/dist/
+
+# Environment secrets
 .env
+.env.local
+.env.production
+backend/.env
+
+# Python
+backend/venv/
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+
+# Logs
+*.log
+dev_server.log
+frontend_server.log
+backend/verify-run.log
+
+# TypeScript build cache
+tsconfig.tsbuildinfo
+backend/tsconfig.tsbuildinfo
+
+# OS files
 .DS_Store
+Thumbs.db
+
+# Uploads (user files, managed on server)
+uploads/
+backend/public/uploads/

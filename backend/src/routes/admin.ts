@@ -15,19 +15,17 @@ router.get('/my-institution', async (req: AuthenticatedRequest, res: Response) =
 
   try {
     const inst = await prisma.institution.findUnique({
-      where: { id: institutionId },
-      include: {
-        _count: {
-          select: { users: true }
-        }
-      }
+      where: { id: institutionId }
     });
 
     if (!inst) {
       return res.status(404).json({ error: 'NotFound', message: 'Institution record not found.' });
     }
 
-    return res.status(200).json(inst);
+    const students = await prisma.user.count({ where: { institutionId, role: 'student' } });
+    const teachers = await prisma.user.count({ where: { institutionId, role: 'teacher' } });
+
+    return res.status(200).json({ ...inst, students, teachers });
   } catch (error: any) {
     console.error('Fetch active institution details exception:', error);
     return res.status(500).json({ error: 'InternalError', message: error.message });

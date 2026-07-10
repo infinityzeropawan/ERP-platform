@@ -60,7 +60,6 @@ const authLimiter = rateLimit({
   legacyHeaders: false,
   message: { error: 'TooManyRequests', message: 'Too many authentication attempts. Try again later.' },
 });
-app.use('/api/v1/auth/login', authLimiter);
 app.use('/api/v1/auth/register', authLimiter);
 
 // Server API health checks

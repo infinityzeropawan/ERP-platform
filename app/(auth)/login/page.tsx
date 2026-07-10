@@ -14,6 +14,7 @@ const themeColors = {
 
 export default function LoginPage() {
   const [tab, setTab] = useState<'staff' | 'student'>('staff');
+  const [role, setRole] = useState('teacher');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPass, setShowPass] = useState(false);
@@ -33,7 +34,7 @@ export default function LoginPage() {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ email, password })
+        body: JSON.stringify({ email, password, role: tab === 'staff' ? role : 'student' })
       });
 
       const data = await res.json();
@@ -99,6 +100,18 @@ export default function LoginPage() {
           <div className="p-6">
             {tab === 'staff' ? (
               <form onSubmit={handleStaffLogin} className="space-y-4">
+                <div>
+                  <label className="block text-[10px] font-bold text-gray-600 mb-1.5 uppercase tracking-wide">Staff Role</label>
+                  <select
+                    value={role}
+                    onChange={e => setRole(e.target.value)}
+                    className={`w-full h-10 px-4 rounded-xl border border-gray-200 text-xs focus:outline-none focus:ring-2 ${themeColors.ring} focus:border-transparent bg-gray-50`}
+                  >
+                    <option value="teacher">Teacher / Instructor</option>
+                    <option value="school_admin">Institution Admin</option>
+                    <option value="superadmin">Super Administrator</option>
+                  </select>
+                </div>
                 <div>
                   <label className="block text-[10px] font-bold text-gray-600 mb-1.5 uppercase tracking-wide">Email Address</label>
                   <input 

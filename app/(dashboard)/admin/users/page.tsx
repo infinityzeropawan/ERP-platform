@@ -135,6 +135,7 @@ export default function AdminUsersPage() {
           role: tab === 'support' ? 'support' : tab === 'teachers' ? 'teacher' : 'student',
           name: formData.name,
           email: formData.email,
+          password: formData.password || undefined,
           phone: formData.phone,
           class: formData.class,
           section: formData.section,

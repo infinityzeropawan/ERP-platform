@@ -133,7 +133,7 @@ const loginLimiter = rateLimit({
 });
 
 router.post('/login', loginLimiter, async (req: AuthenticatedRequest, res: Response) => {
-  const { email, password } = req.body;
+  const { email, password, role } = req.body;
 
   if (!email || !password) {
     return res.status(400).json({ error: 'ValidationError', message: 'Email and password are required' });
@@ -143,11 +143,15 @@ router.post('/login', loginLimiter, async (req: AuthenticatedRequest, res: Respo
     // Check against active DB records
     const user = await prisma.user.findUnique({
       where: { email },
-      include: { institution: true }
+      include: { institution: { select: { slug: true } } }
     });
 
     if (!user) {
-      return res.status(401).json({ error: 'InvalidCredentials', message: 'Incorrect email or password' });
+      return res.status(401).json({ error: 'Unauthorized', message: 'Invalid email or password' });
+    }
+
+    if (role && user.role !== role) {
+      return res.status(401).json({ error: 'Unauthorized', message: `Account exists, but is not registered as a ${role.replace('_', ' ')}.` });
     }
 
     // Enforce approval check

@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { useAuth } from '@/lib/AuthContext';
 import { type SupportStaff } from '@/lib/types';
-import { Users, Search, Plus, GraduationCap, BookOpen, Shield, Trash2, Edit2, ShieldAlert, Bus, ShieldCheck } from 'lucide-react';
+import { Users, Search, Plus, GraduationCap, BookOpen, Shield, Trash2, Edit2, ShieldAlert, Bus, ShieldCheck, Eye, EyeOff, KeyRound } from 'lucide-react';
 
 export default function AdminUsersPage() {
   const { token } = useAuth();
@@ -24,10 +24,10 @@ export default function AdminUsersPage() {
   const [editOpen, setEditOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState<any>(null);
 
-  // Form State
   const [formData, setFormData] = useState({
     name: '',
     email: '',
+    password: '',
     phone: '',
     class: 'IOT-2026',
     section: 'Morning',
@@ -38,11 +38,16 @@ export default function AdminUsersPage() {
     shift: 'morning' as SupportStaff['shift'],
     busNumber: ''
   });
+  const [showPass, setShowPass] = useState(false);
+  const [visiblePassId, setVisiblePassId] = useState<string | null>(null);
+
+  const getDefaultPassword = (email: string) => email.split('@')[0] + '123';
 
   const resetForm = () => {
     setFormData({
       name: '',
       email: '',
+      password: '',
       phone: '',
       class: 'IOT-2026',
       section: 'Morning',
@@ -53,6 +58,7 @@ export default function AdminUsersPage() {
       shift: 'morning',
       busNumber: ''
     });
+    setShowPass(false);
   };
 
   const fetchUsers = async () => {
@@ -90,6 +96,7 @@ export default function AdminUsersPage() {
           role: tab === 'support' ? 'support' : tab === 'teachers' ? 'teacher' : 'student',
           name: formData.name,
           email: formData.email,
+          password: formData.password || undefined,
           phone: formData.phone,
           class: formData.class,
           section: formData.section,
@@ -176,6 +183,7 @@ export default function AdminUsersPage() {
     setFormData({
       name: user.name,
       email: user.email,
+      password: '',
       phone: user.phone || '',
       class: user.class || 'IOT-2026',
       section: user.section || 'Morning',
@@ -186,6 +194,7 @@ export default function AdminUsersPage() {
       shift: user.shift || 'morning',
       busNumber: user.busNumber || ''
     });
+    setShowPass(false);
     setEditOpen(true);
   };
 
@@ -248,7 +257,7 @@ export default function AdminUsersPage() {
                   {tab === 'students' ? 'Class & Sec' : tab === 'teachers' ? 'Subject Specialization' : 'Staff Role & Shift'}
                 </th>
                 <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase">
-                  {tab === 'support' ? 'Basic Salary' : 'Status'}
+                  {tab === 'support' ? 'Basic Salary' : 'Login Password'}
                 </th>
                 <th className="text-right px-4 py-3 text-xs font-semibold text-gray-500 uppercase">Actions</th>
               </tr>
@@ -273,7 +282,16 @@ export default function AdminUsersPage() {
                     <span className="text-[10px] text-gray-400 block">{s.phone}</span>
                   </td>
                   <td className="px-4 py-3.5"><Badge variant="info" className="text-[10px]">{s.class}</Badge></td>
-                  <td className="px-4 py-3.5"><Badge variant="success" className="text-[10px]">Active</Badge></td>
+                  <td className="px-4 py-3.5">
+                    <div className="flex items-center gap-1.5">
+                      <span className="font-mono text-xs text-gray-700 bg-gray-100 px-2 py-0.5 rounded">
+                        {visiblePassId === s.id ? getDefaultPassword(s.email) : '••••••••'}
+                      </span>
+                      <button onClick={() => setVisiblePassId(visiblePassId === s.id ? null : s.id)} className="text-gray-400 hover:text-teal-600">
+                        {visiblePassId === s.id ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
+                      </button>
+                    </div>
+                  </td>
                   <td className="px-4 py-3.5 text-right">
                     <div className="flex gap-1 justify-end">
                       <Button size="sm" variant="outline" onClick={() => openEditDialog(s)} className="h-7 w-7 p-0"><Edit2 className="h-3.5 w-3.5 text-gray-600" /></Button>
@@ -299,7 +317,16 @@ export default function AdminUsersPage() {
                     <span className="text-[10px] text-gray-400 block">{t.phone}</span>
                   </td>
                   <td className="px-4 py-3.5 text-gray-600 font-medium text-xs">{t.subject}</td>
-                  <td className="px-4 py-3.5"><Badge variant="success" className="text-[10px] uppercase">{t.status}</Badge></td>
+                  <td className="px-4 py-3.5">
+                    <div className="flex items-center gap-1.5">
+                      <span className="font-mono text-xs text-gray-700 bg-gray-100 px-2 py-0.5 rounded">
+                        {visiblePassId === t.id ? getDefaultPassword(t.email) : '••••••••'}
+                      </span>
+                      <button onClick={() => setVisiblePassId(visiblePassId === t.id ? null : t.id)} className="text-gray-400 hover:text-teal-600">
+                        {visiblePassId === t.id ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
+                      </button>
+                    </div>
+                  </td>
                   <td className="px-4 py-3.5 text-right">
                     <div className="flex gap-1 justify-end">
                       <Button size="sm" variant="outline" onClick={() => openEditDialog(t)} className="h-7 w-7 p-0"><Edit2 className="h-3.5 w-3.5 text-gray-600" /></Button>
@@ -373,6 +400,15 @@ export default function AdminUsersPage() {
             <div className="space-y-1">
               <label className="text-gray-600">Phone Number</label>
               <Input value={formData.phone} onChange={e => setFormData({ ...formData, phone: e.target.value })} placeholder="Enter phone" className="h-9 text-xs" />
+            </div>
+            <div className="space-y-1">
+              <label className="text-gray-600 flex items-center gap-1"><KeyRound className="h-3 w-3 text-teal-600" /> Set Password <span className="text-gray-400 font-normal">(leave blank for default: email+123)</span></label>
+              <div className="relative">
+                <Input type={showPass ? 'text' : 'password'} value={formData.password} onChange={e => setFormData({ ...formData, password: e.target.value })} placeholder="Custom password or leave blank" className="h-9 text-xs pr-9" />
+                <button type="button" onClick={() => setShowPass(!showPass)} className="absolute right-2 top-2 text-gray-400 hover:text-gray-600">
+                  {showPass ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                </button>
+              </div>
             </div>
 
             {/* Students Fields */}
@@ -469,6 +505,15 @@ export default function AdminUsersPage() {
             <div className="space-y-1">
               <label className="text-gray-600">Phone Number</label>
               <Input value={formData.phone} onChange={e => setFormData({ ...formData, phone: e.target.value })} className="h-9 text-xs" />
+            </div>
+            <div className="space-y-1">
+              <label className="text-gray-600 flex items-center gap-1"><KeyRound className="h-3 w-3 text-teal-600" /> Reset Password <span className="text-gray-400 font-normal">(leave blank to keep current)</span></label>
+              <div className="relative">
+                <Input type={showPass ? 'text' : 'password'} value={formData.password} onChange={e => setFormData({ ...formData, password: e.target.value })} placeholder="New password or leave blank" className="h-9 text-xs pr-9" />
+                <button type="button" onClick={() => setShowPass(!showPass)} className="absolute right-2 top-2 text-gray-400 hover:text-gray-600">
+                  {showPass ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                </button>
+              </div>
             </div>
 
             {/* Students Fields */}

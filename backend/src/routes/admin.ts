@@ -172,7 +172,7 @@ router.post('/users', async (req: AuthenticatedRequest, res: Response) => {
 router.put('/users/:id', async (req: AuthenticatedRequest, res: Response) => {
   const institutionId = req.institutionId;
   const { id } = req.params;
-  const { role, name, email, phone, class: className, section, rollNo, subject, salary, shift, busNumber, fatherName, motherName, address } = req.body;
+  const { role, name, email, password, phone, class: className, section, rollNo, subject, salary, shift, busNumber, fatherName, motherName, address } = req.body;
 
   if (!institutionId) {
     return res.status(400).json({ error: 'TenantContextMissing', message: 'No active institution context.' });
@@ -206,7 +206,8 @@ router.put('/users/:id', async (req: AuthenticatedRequest, res: Response) => {
           qualification: subject,
           fatherName: fatherName !== undefined ? fatherName : undefined,
           motherName: motherName !== undefined ? motherName : undefined,
-          address: address !== undefined ? address : undefined
+          address: address !== undefined ? address : undefined,
+          ...(password && { password: await bcrypt.hash(password, 10) })
         }
       });
       return res.status(200).json(updated);

@@ -121,14 +121,15 @@ router.post('/register', async (req: AuthenticatedRequest, res: Response) => {
 });
 
 const loginLimiter = rateLimit({
-	windowMs: 15 * 60 * 1000, // 15 minutes
-	max: process.env.NODE_ENV === 'production' ? 5 : 10000,
+	windowMs: 1 * 60 * 1000, // 1 minute window
+	max: process.env.NODE_ENV === 'production' ? 3 : 10000, // 3 attempts in production
 	message: {
 		error: 'TooManyRequests',
-		message: 'Too many login attempts from this IP, please try again after 15 minutes',
+		message: 'Too many login attempts. Please wait 1 minute before trying again.',
 	},
-	standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
-	legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+	standardHeaders: true,
+	legacyHeaders: false,
+	skipSuccessfulRequests: true, // Only count failed attempts
 });
 
 router.post('/login', loginLimiter, async (req: AuthenticatedRequest, res: Response) => {

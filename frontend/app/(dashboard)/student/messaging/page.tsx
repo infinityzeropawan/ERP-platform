@@ -1,4 +1,4 @@
-import MessagingClient from '../student_components/Messaging/MessagingClient';
+import MessagingClient from @/app/(dashboard)/student/messaging/messaging_components/MessagingClient;
 
 export default function StudentMessagingPage() {
   return <MessagingClient />;

@@ -1,4 +1,4 @@
-import TimetableClient from '../student_components/Timetable/TimetableClient';
+import TimetableClient from @/app/(dashboard)/student/timetable/timetable_components/TimetableClient;
 
 export default function StudentTimetablePage() {
   return <TimetableClient />;

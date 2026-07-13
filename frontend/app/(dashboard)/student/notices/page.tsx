@@ -1,4 +1,4 @@
-import NoticesClient from '../student_components/Notices/NoticesClient';
+import NoticesClient from @/app/(dashboard)/student/notices/notices_components/NoticesClient;
 
 export default function StudentNoticesPage() {
   return <NoticesClient />;

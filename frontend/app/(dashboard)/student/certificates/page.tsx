@@ -1,4 +1,4 @@
-import CertificatesClient from '../student_components/Certificates/CertificatesClient';
+import CertificatesClient from @/app/(dashboard)/student/certificates/certificates_components/CertificatesClient;
 
 export default function StudentCertificatesPage() {
   return <CertificatesClient />;

@@ -1,4 +1,4 @@
-import DoubtsClient from '../student_components/Doubts/DoubtsClient';
+import DoubtsClient from @/app/(dashboard)/student/doubts/doubts_components/DoubtsClient;
 
 export default function StudentDoubtsPage() {
   return <DoubtsClient />;

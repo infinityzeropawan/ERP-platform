@@ -1,4 +1,4 @@
-import StudyMaterialClient from '../student_components/StudyMaterial/StudyMaterialClient';
+import StudyMaterialClient from @/app/(dashboard)/student/study-material/study_material_components/StudyMaterialClient;
 
 export default function StudentStudyMaterialPage() {
   return <StudyMaterialClient />;

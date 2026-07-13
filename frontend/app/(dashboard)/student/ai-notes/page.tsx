@@ -1,4 +1,4 @@
-import AiNotesClient from '../student_components/AiNotes/AiNotesClient';
+import AiNotesClient from @/app/(dashboard)/student/ai-notes/ai_notes_components/AiNotesClient;
 
 export default function StudentAiNotesPage() {
   return <AiNotesClient />;

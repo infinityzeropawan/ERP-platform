@@ -1,4 +1,4 @@
-import LeaveClient from '../student_components/Leave/LeaveClient';
+import LeaveClient from @/app/(dashboard)/student/leave/leave_components/LeaveClient;
 
 export default function StudentLeavePage() {
   return <LeaveClient />;

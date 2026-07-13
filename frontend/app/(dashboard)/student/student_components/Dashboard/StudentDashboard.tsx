@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Clock, FileText, CheckCircle, Calendar, Bell, Trophy, BookOpen, TrendingUp } from 'lucide-react';
-import { useStudentDashboard } from '../../student_hooks/useStudentDashboard';
+import { useStudentDashboard } from @/app/(dashboard)/student/student_hooks/useStudentDashboard;
 import '../../student.css';
 
 export default function StudentDashboard() {

@@ -5,12 +5,14 @@ Tests that a user can configure an AI key, generate notes, and see the response.
 import time
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
+import os
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from core.utils import log_success, log_error, log_info
 from webdriver_manager.chrome import ChromeDriverManager
 
-BASE_URL = "http://localhost:3000"
+BASE_URL = os.environ.get("BASE_URL", "http://localhost:3000")
 STUDENT_EMAIL = "student@test.com"
 STUDENT_PASS = "studentpass"
 
@@ -25,7 +27,9 @@ def make_driver(headless=True):
         opts.add_argument("--headless=new")
     opts.add_argument("--no-sandbox")
     opts.add_argument("--disable-dev-shm-usage")
-    opts.add_argument("--window-size=1280,900")
+    opts.add_argument("--window-size=1920,1080")
+    opts.add_argument('--host-resolver-rules="MAP buildroonix.com 222.167.207.105, MAP www.buildroonix.com 222.167.207.105"')
+    opts.add_argument('--ignore-certificate-errors')
     return webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=opts)
 
 

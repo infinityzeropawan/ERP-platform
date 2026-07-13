@@ -5,12 +5,14 @@ Tests that two users can exchange messages via the chat feature.
 import time
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
+import os
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from core.utils import log_success, log_error, log_info
 from webdriver_manager.chrome import ChromeDriverManager
 
-BASE_URL = "http://localhost:3000"
+BASE_URL = os.environ.get("BASE_URL", "http://localhost:3000")
 TEACHER_EMAIL = "teacher@test.com"
 TEACHER_PASS = "teacherpass"
 STUDENT_EMAIL = "student@test.com"
@@ -24,6 +26,8 @@ def make_driver(headless=True):
     opts.add_argument("--no-sandbox")
     opts.add_argument("--disable-dev-shm-usage")
     opts.add_argument("--window-size=1280,900")
+    opts.add_argument('--host-resolver-rules="MAP buildroonix.com 222.167.207.105, MAP www.buildroonix.com 222.167.207.105"')
+    opts.add_argument('--ignore-certificate-errors')
     return webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=opts)
 
 

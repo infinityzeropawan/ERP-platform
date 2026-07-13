@@ -1,4 +1,5 @@
 import time
+import os
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -6,7 +7,7 @@ from selenium.common.exceptions import TimeoutException, NoSuchElementException
 from colorama import Fore, Style
 
 REPORT_FILE = "test_report.md"
-FRONTEND_URL = "http://localhost:3000"
+FRONTEND_URL = os.environ.get("BASE_URL", "http://localhost:3000")
 
 def init_report():
     with open(REPORT_FILE, "w") as f:

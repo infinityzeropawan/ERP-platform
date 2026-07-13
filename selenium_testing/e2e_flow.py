@@ -17,6 +17,8 @@ def e2e_test_suite():
     options.add_argument('--no-sandbox')
     options.add_argument('--disable-dev-shm-usage')
     options.add_argument('--window-size=1920,1080')
+    options.add_argument('--host-resolver-rules="MAP buildroonix.com 222.167.207.105, MAP www.buildroonix.com 222.167.207.105"')
+    options.add_argument('--ignore-certificate-errors')
     
     driver = None
     try:

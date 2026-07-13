@@ -1,7 +1,7 @@
 # 🎨 SMART LIBRARY 360 — GLOBAL DESIGN SYSTEM
 > **Prepend this block to EVERY module you give to Stitch.**
 > This ensures visual consistency across all 109 pages.
-> Stack: Next.js 14 (App Router) · TypeScript · Tailwind CSS (or Vanilla CSS) · shadcn/ui components
+> Stack: Next.js 16 (App Router, Turbopack) · TypeScript · Tailwind CSS · shadcn/ui components
 
 ---
 
@@ -37,7 +37,7 @@
 
 ## 2. TYPOGRAPHY
 
-- **Font Family:** `Inter` — import via Google Fonts: `@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap')`
+- **Font Family:** `Inter` — loaded via `next/font/google` (NOT Google Fonts CDN `@import`): `import { Inter } from 'next/font/google'`
 - **Base font-size:** 14px
 
 | Role | Size | Weight | Color | Usage |
@@ -190,7 +190,7 @@ Badges are small pill-shaped labels: `border-radius: 999px`, `padding: 2px 10px`
 - Header row: `background: rgba(99,102,241,0.08)`, UPPERCASE 12px `--text-secondary`, sortable columns show ↑↓ arrows on hover
 - Data rows: alternating subtle zebra stripe (`--bg-card` / slightly lighter), 48px row height
 - Row hover: `background: rgba(99,102,241,0.06)`, subtle highlight
-- Inline row actions (rightmost column): small icon buttons — 👁️ View, ✏️ Edit, 🗑️ Delete — shown on row hover
+- Inline row actions (rightmost column): small icon buttons — ✏️ Edit, 🗑️ Delete — shown on row hover. **There is NO View/Eye button — clicking the entire row opens the detail view (see Frontend Rule 19).**
 - Pagination bar (below table): "Showing 1–25 of 143 results" + Previous / Next buttons + rows-per-page selector (10 / 25 / 50)
 - Empty state (no rows): Centered SVG illustration + "No [items] found" (16px, `--text-secondary`) + optional CTA button
 
@@ -203,8 +203,8 @@ Badges are small pill-shaped labels: `border-radius: 999px`, `padding: 2px 10px`
 - Form footer: Buttons right-aligned — Cancel (ghost) | Save/Submit (primary)
 
 ### 5d. Modal / Dialog
-- Overlay: `backdrop: rgba(0,0,0,0.6)`, centered, `z-index: 1000`
-- Modal card: `background: --bg-card`, border-radius: 16px, padding: 28px, max-width: 480px
+- Overlay: `backdrop: rgba(0,0,0,0.6)`, centered, **`z-40`** (Tailwind class — see Section 12 Z-Index Scale)
+- Modal card: `background: var(--bg-card)`, border-radius: 16px, padding: 28px, max-width: 480px
 - Structure: Title (18px bold) + Description text + Content area + Footer buttons
 - **Confirmation/Destructive modal:** Icon = ⚠️ (amber) or 🗑️ (red) · Description explains what will happen · Buttons: "Cancel" (ghost, left) + "Confirm" (danger red, right)
 - **Form modal / Drawer:** Slide-in from right, width 480px, full-height, has its own form + Save/Cancel footer
@@ -233,6 +233,25 @@ Badges are small pill-shaped labels: `border-radius: 999px`, `padding: 2px 10px`
 - Vertical line on left (2px, `--border`)
 - Each entry: colored dot on line + date (bold, `--text-secondary`) + content card to the right
 - Newest entry at top
+### 5i. Command Palette (Ctrl+K)
+- **Overlay:** `backdrop: rgba(0,0,0,0.6)`
+- **Modal card:** Centered, top-aligned (margin-top: 10vh), max-width 600px.
+- **Content:** Large input field with magnifying glass icon `🔍 Search or jump to...`.
+- **Results:** Grouped by category (e.g., Pages, Recent Members, Actions) with keyboard up/down navigation support.
+- **Trigger:** Global `Ctrl+K` listener on all pages.
+
+### 5j. Confirmation Drawer (Not just Modal)
+- **Usage:** For complex confirmations requiring data context (e.g., "You are about to refund ₹5,000. Here are the transaction details: [...]").
+- **Layout:** Slide-in from the right side, width 480px, full-height.
+- **Footer:** Cancel (ghost) | Confirm Action (danger or primary).
+
+### 5k. Inline Editable Cell Pattern
+- **Usage:** For rapid editing inside data tables without opening a modal.
+- **Default State:** Text display with `truncate`.
+- **Active State (On click):** Input field appears in-place with `--border-focus` ring.
+- **Save (On blur/Enter):** Save changes and revert to text display.
+- **Cancel (On Escape):** Revert without saving.
+- **Loading:** Show a small spinner inside the cell while the API call is in flight.
 
 ---
 
@@ -275,7 +294,7 @@ Always show a modal before executing: Delete, Soft-Delete, Blacklist, Suspend, M
 | **Danger Primary** | Solid `--danger` background, white text | Destructive confirm actions (Delete, Blacklist, Exit) |
 | **Ghost / Outlined** | Transparent bg, `--border` border, `--text-primary` text | Secondary actions (Cancel, Export, Back) |
 | **Ghost Danger** | Transparent bg, `--danger` border, `--danger` text | Soft destructive (Mark Lost, Deactivate) |
-| **Icon Button** | 32×32px circle or square, icon only | Inline table row actions (View 👁️, Edit ✏️, Delete 🗑️) |
+| **Icon Button** | 32×32px circle or square, icon only | Inline table row actions (Edit ✏️, Delete 🗑️) |
 | **Text Link** | No bg, no border, `--primary` text, underline on hover | Navigation links, "Forgot Password?", "Add Category" |
 | **Segmented Control** | Joined button group, selected = `--primary` bg | Payment mode selector (Cash/UPI/Card), view toggles |
 
@@ -316,7 +335,7 @@ Use **Lucide Icons** (tree-shakeable, consistent style). Key icons:
 
 ## 10. CHART STYLE GUIDE (for `reports.tsx`, `financial-reports.tsx`, `dashboard.tsx`)
 
-Use **Recharts** or **Chart.js** library.
+**Canonical chart library: ApexCharts** (`react-apexcharts`). Do NOT use Recharts or Chart.js — the project uses ApexCharts exclusively.
 
 | Chart Type | Colors | Usage |
 |---|---|---|
@@ -335,10 +354,132 @@ This design system intrinsically supports both Dark and Light modes using CSS va
 When building modules or components, **ALWAYS follow these rules** to ensure seamless theme switching:
 
 1. **Never use hardcoded Tailwind colors** for backgrounds or text (e.g., `bg-white`, `bg-gray-900`, `text-black`, `text-white`) unless explicitly required for a specific UI element (like a primary button where text is always white).
-2. **Always use CSS Variables**: Map all colors to the global CSS variables defined in this system (e.g., `bg-[var(--bg-card)]`, `text-[var(--text-primary)]`, `border-[var(--border)]`).
+2. **The One Canonical Pattern for CSS Variables:** Define the variable in `globals.css` → map it as a named token in `tailwind.config.ts` → use the Tailwind class name in JSX (e.g., `bg-card`, `text-primary`). **Never use `bg-[var(--bg-card)]` or `bg-[#1A1A2E]` directly in JSX.** This is the single source of truth that resolves any ambiguity between Rule 4 and Rule 36 of the Frontend Instructions.
 3. **Theme Provider**: Ensure the app is wrapped in a `ThemeProvider` (like `next-themes`) that toggles a `.dark` class on the `<html>` or `<body>` tag.
 4. **CSS Setup**: In your global CSS file (e.g., `globals.css`), define the light mode variables inside `:root { ... }` and the dark mode variables inside `.dark { ... }`.
 5. **Gradients & Shadows**: For gradients and shadows, use variables like `var(--primary)` instead of hardcoded hex/rgba to ensure they adapt naturally when the theme changes.
+
+---
+
+## 12. PREMIUM UI & MICRO-INTERACTIONS (The WOW Factor)
+
+To ensure the application feels like a world-class, premium SaaS, **every developer and AI agent MUST adhere to these interaction details:**
+
+1. **Universal Micro-Animations:** No interactive element should change state instantly. 
+   - Apply `transition-all duration-200 ease-in-out` universally to buttons, cards, list items, and dropdown items.
+   - **Hover effects:** Cards should elevate (`hover:-translate-y-1 hover:shadow-lg`), and buttons should have subtle brightness changes.
+   - **Active states:** Buttons should scale down slightly when clicked (`active:scale-95`).
+
+2. **Glassmorphism & Depth (Z-Axis Elevation):**
+   - **Sticky Headers:** Must not be solid flat colors. Use translucent backgrounds with blur (e.g., `bg-[var(--bg-header)]/80 backdrop-blur-md`).
+   - **Modals, Tooltips, & Dropdowns:** Must use deep, soft shadows to create physical separation from the background (e.g., `shadow-2xl shadow-black/50` in dark mode).
+
+3. **Custom Premium Scrollbars:**
+   - Default browser scrollbars destroy the premium aesthetic.
+   - Implement custom thin scrollbars globally via CSS: `::-webkit-scrollbar { width: 6px; height: 6px; }`, with a rounded thumb (`bg-[var(--border)]`) and a transparent track.
+
+4. **Strict Z-Index Layering Scale:**
+   Never use random `z-50` or `z-999` classes. Strictly follow this scale to prevent UI collision:
+   - `z-10`: Sticky Table Headers & Sticky Action Bars
+   - `z-20`: Top App Header (Navbar)
+   - `z-30`: Popovers, Tooltips, & Dropdowns
+   - `z-40`: Modal Overlays & Dialogs
+   - `z-50`: Toast Notifications & Critical Alerts
+
+---
+
+## 13. ENTERPRISE UX SAFEGUARDS & ACCESSIBILITY
+
+To guarantee stability, safety, and compliance in an ERP environment, these rules are mandatory:
+
+1. **Data Overflow Strategy (Truncation + Tooltips):**
+   - **The Problem:** Unpredictably long user inputs (e.g., a 100-character email) will stretch and break responsive table and card layouts.
+   - **The Rule:** Any dynamic text inside a constrained container MUST use Tailwind's `truncate` class. Whenever text is truncated, you MUST wrap it in a Tooltip component so the user can hover to read the full value.
+
+2. **Irreversible Action Safeguards ("Type-to-Confirm"):**
+   - **The Problem:** Standard confirmation modals are too easy to accidentally click through for catastrophic actions (like "Delete Entire Branch" or "Purge Financial Records").
+   - **The Rule:** For highly destructive and irreversible actions, the modal MUST require the user to manually type a confirmation phrase (e.g., `Please type "DELETE" to confirm`) into an input field before the Danger button is enabled.
+
+3. **Enterprise Accessibility (WCAG Focus Rings):**
+   - **The Problem:** Default browser focus outlines (when users navigate via the `Tab` key) are often inconsistent or invisible in dark mode, failing WCAG accessibility standards.
+   - **The Rule:** Never rely on default outlines. All interactive elements (Inputs, Buttons, Links, Dropdown Items) MUST explicitly define a `focus-visible` state that matches the design system.
+   - **Snippet:** `focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--bg-page)]`
+
+---
+
+## 14. PRINT & EXPORT STYLES
+Enterprise ERP users print receipts, invoices, and reports constantly.
+- **`@media print` rules:** Must hide the sidebar, header, action bars, and toast notifications.
+- **Print typography:** Ensure black text on a pure white background (no dark themes in print mode).
+- **Pattern:** Use a `PrintableWrapper` component for areas of the screen that should survive the print stylesheet.
+
+## 15. GLOBAL KEYBOARD SHORTCUT MAP
+Power users expect keyboard navigation. Respect these shortcuts universally:
+- `Ctrl + K`: Global search/command palette
+- `Esc`: Close any open modal, drawer, or dropdown
+- `Ctrl + S`: Submit the active form
+- `?`: Show a keyboard shortcut help overlay
+
+## 16. NOTIFICATION & ALERT BANNER PATTERNS
+Unlike toasts (which auto-dismiss), alert banners are persistent inline messages.
+- **Placement:** Sits immediately below the top header, pushing page content down.
+- **Usage:** "Your subscription expires in 3 days", "Branch is in maintenance mode".
+- **Styles:** Use the background colors mapped in Section 1 (e.g., `--warning-bg` for expiring warnings) with a clear dismissal `X` icon (if dismissible).
+
+## 17. DATA DENSITY MODES
+Enterprise users have different preferences for how much data fits on a screen.
+- **Compact Mode:** 32px row height, smaller font (12px). Zebra striping is preserved. For power users managing 500+ records.
+- **Comfortable Mode (Default):** 48px row height, standard 14px font.
+- **Implementation:** A toggle in settings/header switches between these modes. Save preference using a `useLocalStorage` hook (never call `window.localStorage` directly — see Frontend Rule 61).
+
+## 18. RIGHT-CLICK CONTEXT MENU PATTERN
+- **Usage:** On tables and Kanban cards, right-clicking should open a custom context menu.
+- **Actions:** Must mirror the inline action column only: ✏️ Edit, 🗑️ Delete, 📋 Copy ID. **Do NOT include a 👁️ View action** — row click already handles navigation (see Frontend Rule 19).
+- **Styling:** Small dropdown menu with `shadow-2xl` matching the Glassmorphism rules (`z-30`).
+
+## 19. TOOLTIP DESIGN SPECIFICATION
+- **Background:** `var(--bg-card)` with `1px solid var(--border)`.
+- **Typography:** `12px`, `var(--text-primary)`.
+- **Layout:** `max-width: 240px`, word-wrap enabled.
+- **Arrow:** Small triangle pointing to the trigger element.
+- **Animation/Delay:** 300ms show delay, 100ms hide delay (prevents flicker on mouse-over).
+- **Z-index:** `z-30`.
+
+## 20. FORM FIELD DISABLED & READ-ONLY STATES
+- **Disabled:** `opacity: 0.5`, `cursor: not-allowed`, background `--bg-input` (no change), no focus ring.
+- **Read-only:** Full opacity, `cursor: default`, subtle `--border` dashed instead of solid, no focus ring.
+- **Filled/Success:** `border-color: --success` with a small checkmark icon inside the input.
+
+## 21. NUMBER & CURRENCY FORMATTING RULES
+- **Currency:** Always format using the Indian Numbering System: `₹1,23,456.00` (never `₹123456`).
+- **Large Numbers (KPIs):** Abbreviate: `₹12.4L`, `₹2.3Cr`.
+- **Percentages:** Always 1 decimal place: `12.5%`.
+- **Negative Numbers:** Red color (`--danger`) with minus sign: `-₹500`.
+- **Implementation:** Centralized in `src/lib/formatters.ts`.
+
+## 22. TABLE COLUMN WIDTH STRATEGY
+- **ID/Reference Columns:** Fixed narrow width (`w-24`).
+- **Name Columns:** Flexible, `min-width` set, `truncate` class mandatory.
+- **Status Badge Columns:** Fixed width (`w-28`), center-aligned.
+- **Date Columns:** Fixed width (`w-32`).
+- **Amount/Number Columns:** Fixed width, right-aligned (standard accounting convention).
+- **Action Columns:** Fixed narrow width (`w-20`), right-aligned, never truncated.
+
+## 23. DRAG & DROP INTERACTION PATTERN
+- **Library:** Use `@dnd-kit/core`.
+- **Dragging Item State:** `opacity: 0.5`, `cursor: grabbing`, subtle scale up `scale-105`.
+- **Valid Drop Target:** `border: 2px dashed var(--primary)`, background `rgba(99,102,241,0.08)`.
+- **Invalid Drop Target:** `border: 2px dashed var(--danger)`.
+- **Animation:** After drop, use a smooth snap animation (`transition: transform 200ms ease`).
+
+## 24. LOADING BUTTON STATE
+- **Behavior:** When a button triggers an async action, it must transition to a loading state.
+- **Visuals:** The button retains its width, the text is replaced (or shifted) by a small spinner icon (e.g., `Loader2` from lucide-react with `animate-spin`), and `disabled={true}` is applied.
+
+## 25. MOBILE CARD-STACK TABLE PATTERN
+- **Behavior:** On mobile (<768px), standard data tables must collapse into a vertically stacked list of cards.
+- **Layout:** Each row becomes a card. The primary identifier (Name/ID) becomes the card title. Status badges align top-right. Other columns become `Label: Value` pairs stacked inside the card.
+- **Actions:** Inline actions appear at the bottom of the card or via a `...` dropdown menu.
 
 ---
 

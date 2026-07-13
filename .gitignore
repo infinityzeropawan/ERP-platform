@@ -1,15 +1,19 @@
 # Dependencies
 node_modules/
+frontend/node_modules/
 backend/node_modules/
 
 # Build outputs (compiled on server — never commit)
-.next/
+frontend/.next/
 backend/dist/
 
 # Environment secrets
 .env
 .env.local
 .env.production
+frontend/.env
+frontend/.env.local
+frontend/.env.production
 backend/.env
 
 # Python
@@ -27,7 +31,7 @@ frontend_server.log
 backend/verify-run.log
 
 # TypeScript build cache
-tsconfig.tsbuildinfo
+frontend/tsconfig.tsbuildinfo
 backend/tsconfig.tsbuildinfo
 
 # OS files

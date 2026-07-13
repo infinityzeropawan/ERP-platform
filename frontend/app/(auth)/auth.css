@@ -1,0 +1,55 @@
+/* auth.css - Theme Independence for Auth Module */
+
+:root {
+  --auth-bg-start: #0f172a; /* slate-900 */
+  --auth-bg-mid: #1e293b;   /* slate-800 */
+  --auth-bg-end: #134e4a;   /* teal-900 */
+  --auth-logo-start: #2dd4bf; /* teal-400 */
+  --auth-logo-end: #0d9488;   /* teal-600 */
+  --auth-btn-start: #14b8a6; /* teal-500 */
+  --auth-btn-end: #0d9488;   /* teal-600 */
+  --auth-btn-hover-start: #0d9488; /* teal-600 */
+  --auth-btn-hover-end: #0f766e;   /* teal-700 */
+  --auth-text-highlight: #5eead4; /* teal-300 */
+  --auth-text-link: #2dd4bf; /* teal-400 */
+  --auth-ring-color: #14b8a6; /* teal-500 */
+  --auth-badge-bg: #f0fdfa; /* teal-50 */
+  --auth-badge-text: #115e59; /* teal-800 */
+  --auth-badge-border: #99f6e4; /* teal-200 */
+}
+
+/* Base custom classes to replace hardcoded utilities */
+.auth-page-bg {
+  background-image: linear-gradient(to bottom right, var(--auth-bg-start), var(--auth-bg-mid), var(--auth-bg-end));
+}
+
+.auth-logo-bg {
+  background-image: linear-gradient(to bottom right, var(--auth-logo-start), var(--auth-logo-end));
+}
+
+.auth-btn-bg {
+  background-image: linear-gradient(to right, var(--auth-btn-start), var(--auth-btn-end));
+}
+
+.auth-btn-bg:hover:not(:disabled) {
+  background-image: linear-gradient(to right, var(--auth-btn-hover-start), var(--auth-btn-hover-end));
+}
+
+.auth-text-highlight {
+  color: var(--auth-text-highlight);
+}
+
+.auth-text-link {
+  color: var(--auth-text-link);
+}
+
+.auth-text-link:hover {
+  text-decoration: underline;
+}
+
+.auth-focus-ring:focus {
+  outline: none;
+  --tw-ring-color: var(--auth-ring-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+}

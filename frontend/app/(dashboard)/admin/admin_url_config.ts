@@ -1,0 +1,30 @@
+export const ADMIN_ROUTES = {
+  PAGES: {
+    DASHBOARD: '/admin',
+    USERS: '/admin/users',
+    CLASSES: '/admin/classes',
+    INSTITUTIONS: '/admin/institutions',
+    PAYROLL: '/admin/payroll',
+    ENROLLMENT: '/admin/enrollment',
+    INTEGRATIONS: '/admin/integrations',
+    TIMETABLE: '/admin/timetable',
+    REPORTS: '/admin/reports',
+    NOTIFICATIONS: '/admin/notifications',
+    ATTENDANCE: '/admin/attendance',
+    MESSAGING: '/admin/messaging',
+  },
+  API: {
+    MY_INSTITUTION: '/api/v1/admin/my-institution',
+    USERS: '/api/v1/admin/users',
+    CLASSES: '/api/v1/admin/classes',
+    INSTITUTIONS: '/api/v1/superadmin/institutions',
+    PAYROLL: '/api/v1/admin/payroll',
+    PAYROLL_PAY_ALL: '/api/v1/admin/payroll/pay-all',
+    ENROLLMENT_REQUESTS: '/api/v1/admin/enrollment-requests',
+    INTEGRATIONS: '/api/v1/admin/integrations',
+    INTEGRATIONS_TEST: '/api/v1/admin/integrations/test',
+    REPORTS_ANALYTICS: '/api/v1/admin/reports/analytics',
+    NOTIFICATIONS_SEND: '/api/v1/admin/notifications/send',
+    PARENT_MESSAGES: '/api/v1/admin/parent-messages',
+  }
+} as const;

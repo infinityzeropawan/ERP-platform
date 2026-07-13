@@ -1,0 +1,41 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* SMART LIBRARY 360 - GLOBAL DESIGN SYSTEM MAPPING FOR PARENT MODULE */
+    --parent-primary: #6366F1;
+    --parent-primary-hover: #4F46E5;
+    --parent-primary-subtle: #EEF2FF;
+    
+    --parent-bg-page: #0F0F1A;
+    --parent-bg-card: #1A1A2E;
+    --parent-bg-sidebar: #12121F;
+    --parent-bg-header: #16162A;
+    --parent-bg-input: #1E1E32;
+    --parent-bg-hover: rgba(99, 102, 241, 0.06);
+    
+    --parent-border: #2A2A3E;
+    --parent-border-focus: #6366F1;
+    
+    --parent-text-primary: #F0F0FF;
+    --parent-text-secondary: #8888AA;
+    --parent-text-disabled: #44445A;
+    
+    --parent-success: #10B981;
+    --parent-success-bg: #064E3B;
+    
+    --parent-warning: #F59E0B;
+    --parent-warning-bg: #451A03;
+    
+    --parent-danger: #EF4444;
+    --parent-danger-bg: #450A0A;
+    
+    --parent-info: #3B82F6;
+    --parent-info-bg: #1E3A5F;
+    
+    --parent-purple: #8B5CF6;
+    --parent-purple-bg: #2E1065;
+  }
+}

@@ -1,0 +1,40 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* SMART LIBRARY 360 - GLOBAL DESIGN SYSTEM MAPPING FOR STUDENT MODULE */
+    --student-primary: #6366F1;
+    --student-primary-hover: #4F46E5;
+    --student-primary-subtle: #EEF2FF;
+    
+    --student-bg-page: #0F0F1A;
+    --student-bg-card: #1A1A2E;
+    --student-bg-sidebar: #12121F;
+    --student-bg-header: #16162A;
+    --student-bg-input: #1E1E32;
+    
+    --student-border: #2A2A3E;
+    --student-border-focus: #6366F1;
+    
+    --student-text-primary: #F0F0FF;
+    --student-text-secondary: #8888AA;
+    --student-text-disabled: #44445A;
+    
+    --student-success: #10B981;
+    --student-success-bg: #064E3B;
+    
+    --student-warning: #F59E0B;
+    --student-warning-bg: #451A03;
+    
+    --student-danger: #EF4444;
+    --student-danger-bg: #450A0A;
+    
+    --student-info: #3B82F6;
+    --student-info-bg: #1E3A5F;
+    
+    --student-purple: #8B5CF6;
+    --student-purple-bg: #2E1065;
+  }
+}

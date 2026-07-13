@@ -1,0 +1,22 @@
+import { Award, Plus } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+
+interface Props {
+  onOpenCreate: () => void;
+}
+
+export function ExamsHeader({ onOpenCreate }: Props) {
+  return (
+    <div className="flex items-center justify-between flex-wrap gap-3">
+      <div>
+        <h1 className="text-2xl font-bold text-[var(--text-primary)] flex items-center gap-2">
+          <Award className="h-6 w-6 text-[var(--primary)]" />Exams & Results
+        </h1>
+        <p className="text-[var(--text-secondary)] text-sm mt-0.5">Schedule exams and enter student marks</p>
+      </div>
+      <Button onClick={onOpenCreate} className="flex items-center gap-2 bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-white">
+        <Plus className="h-4 w-4" />Schedule Exam
+      </Button>
+    </div>
+  );
+}

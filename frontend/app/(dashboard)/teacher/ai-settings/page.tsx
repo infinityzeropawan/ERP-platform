@@ -1,4 +1,5 @@
-import AiSettingsPanel from '@/components/ai/AiSettingsPanel';
-export default function TeacherAiSettings() {
-  return <AiSettingsPanel showInstitutionSection={false} />;
+import { AiSettingsMain } from './ai_settings_components/AiSettingsMain';
+
+export default function TeacherAiSettingsPage() {
+  return <AiSettingsMain />;
 }

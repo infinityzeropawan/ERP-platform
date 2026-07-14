@@ -13,7 +13,7 @@ const DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 interface TimetableItem {
   id: string;
   name: string;
-  time: string;
+  timee: string;
   subject: string;
   subjectCode: string;
   class: string;
@@ -73,14 +73,14 @@ export default function AdminTimetablePage() {
     const cleanStr = timeStr.trim().toUpperCase();
     const match = cleanStr.match(/^(\d+):(\d+)\s*(AM|PM)$/);
     if (!match) return 0;
-    
+
     let hours = Number(match[1]);
     const minutes = Number(match[2]);
     const ampm = match[3];
-    
+
     if (ampm === 'PM' && hours !== 12) hours += 12;
     if (ampm === 'AM' && hours === 12) hours = 0;
-    
+
     return hours * 60 + minutes;
   };
 
@@ -108,16 +108,16 @@ export default function AdminTimetablePage() {
     // Check all days and classes in timetableData
     for (const d of DAYS) {
       if (d !== day) continue;
-      
+
       const slots = timetableData[d] || [];
       for (const slot of slots) {
         if (slot.id === ignoreId) continue;
-        
+
         const existingTimes = parseInterval(slot.time);
-        
+
         // Overlap condition: startA < endB && endA > startB
         const isOverlapping = newTimes.start < existingTimes.end && newTimes.end > existingTimes.start;
-        
+
         if (isOverlapping) {
           if (slot.teacherName === teacher) {
             return `Conflict: Teacher "${teacher}" is already assigned to "${slot.subject}" for class "${slot.class}" during this time (${slot.time}) on ${day}.`;
@@ -151,7 +151,7 @@ export default function AdminTimetablePage() {
   // Submit new slot
   const handleAddSubmit = async () => {
     if (!activeSlot || !activeSlot.day || !activeSlot.time) return;
-    
+
     const conflict = checkConflict(
       activeSlot.day,
       activeSlot.time,
@@ -268,7 +268,7 @@ export default function AdminTimetablePage() {
       <div className="grid grid-cols-1 xl:grid-cols-7 gap-4">
         {DAYS.map(day => {
           const slots = (timetableData[day] || []).filter(s => s.class === selectedClass);
-          
+
           return (
             <Card key={day} className="flex flex-col min-h-[300px] border-gray-150">
               <CardHeader className="bg-gray-50/50 py-2.5 px-3 border-b flex flex-row items-center justify-between">

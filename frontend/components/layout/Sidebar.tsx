@@ -10,7 +10,8 @@ import {
   MessageCircle, ChevronDown, ChevronRight, Menu, X, Rocket,
   GraduationCap, BarChart3, Settings, Bell, BookMarked, Layers, Building2,
   CreditCard, Trophy, IndianRupee, Megaphone, Globe, Shield, BookCopy, BellRing, ScrollText,
-  HelpCircle, Star, Library, Heart, Ticket, Webhook, Smartphone, MessagesSquare, Sparkles
+  HelpCircle, Star, Library, Heart, Ticket, Webhook, Smartphone, MessagesSquare, Sparkles,
+  ScanFace, Navigation, MapPin
 } from 'lucide-react';
 
 interface NavItem {
@@ -61,6 +62,8 @@ const navGroups: NavGroup[] = [
       { href: '/chat', label: 'Real-time Chat', icon: MessagesSquare, moduleKey: 'mod_realtime_chat' },
       { href: '/admin/ai-settings', label: 'AI Settings', icon: Sparkles, moduleKey: 'mod_ai_features' },
       { href: '/admin/messaging', label: 'Messaging', icon: MessageCircle },
+      { href: '/admin/face-attendance', label: 'Face Attendance Logs', icon: ScanFace, moduleKey: 'mod_face_attendance' },
+      { href: '/admin/bus-tracking', label: 'Live Bus Tracking', icon: Navigation, moduleKey: 'mod_bus_tracking' },
       { href: '/admin/settings', label: 'Settings', icon: Settings },
     ],
   },
@@ -71,6 +74,7 @@ const navGroups: NavGroup[] = [
     items: [
       { href: '/teacher', label: 'Dashboard', icon: LayoutDashboard },
       { href: '/teacher/attendance', label: 'Mark Attendance', icon: CheckSquare, moduleKey: 'mod_attendance' },
+      { href: '/teacher/face-attendance', label: 'Face Check-in', icon: ScanFace, moduleKey: 'mod_face_attendance' },
       { href: '/teacher/student-attendance', label: 'Attendance Reports', icon: UserCheck, moduleKey: 'mod_attendance' },
       { href: '/teacher/assignments', label: 'Assignments & HW', icon: FileText, moduleKey: 'mod_assignments' },
       { href: '/teacher/timetable', label: 'My Timetable', icon: Clock, moduleKey: 'mod_timetable' },
@@ -95,6 +99,8 @@ const navGroups: NavGroup[] = [
       { href: '/teacher/parent-communication', label: 'Parent Communication', icon: Megaphone, moduleKey: 'mod_parent_comm' },
       { href: '/chat', label: 'Real-time Chat', icon: MessagesSquare, moduleKey: 'mod_realtime_chat' },
       { href: '/teacher/messaging', label: 'Messaging', icon: MessageCircle },
+      { href: '/teacher/face-register', label: 'Face Registration', icon: ScanFace, moduleKey: 'mod_face_attendance' },
+      { href: '/teacher/bus-tracking', label: 'Bus GPS Sharing', icon: Navigation, moduleKey: 'mod_bus_tracking' },
       { href: '/teacher/ai-notes', label: 'AI Notes Generator', icon: Layers, moduleKey: 'mod_ai_features' },
       { href: '/teacher/ai-settings', label: 'AI Settings', icon: Sparkles, moduleKey: 'mod_ai_features' },
       { href: '/teacher/profile', label: 'My Profile', icon: Users },

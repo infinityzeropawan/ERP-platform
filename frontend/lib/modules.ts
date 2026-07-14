@@ -44,6 +44,8 @@ export type ModuleKey =
   | 'mod_payment_gateway'
   | 'mod_realtime_chat'
   | 'mod_ai_features'
+  | 'mod_face_attendance'
+  | 'mod_bus_tracking'
   // ── COACHING-SPECIFIC ─────────────────────────────────────
   | 'mod_batches'
   | 'mod_test_series'
@@ -117,6 +119,8 @@ export const MODULE_CATALOG: ModuleDef[] = [
   { key: 'mod_payment_gateway',name: 'Online Payment Gateway',       description: 'Accept online fee payments',     category: 'admin',    isPremium: true,  icon: 'CreditCard',   defaultFor: [] },
   { key: 'mod_realtime_chat',  name: 'Real-time Chat',               description: 'Live 1-on-1 and group messaging', category: 'admin',    isPremium: true,  icon: 'MessagesSquare', defaultFor: [] },
   { key: 'mod_ai_features',    name: 'AI Features',                  description: 'Gemini/OpenAI-powered AI tools',  category: 'admin',    isPremium: true,  icon: 'Sparkles',     defaultFor: [] },
+  { key: 'mod_face_attendance',name: 'Face Recognition Attendance',  description: 'AI face recognition attendance with GPS verification', category: 'admin', isPremium: true, icon: 'ScanFace', defaultFor: [] },
+  { key: 'mod_bus_tracking',   name: 'Bus GPS Tracking',             description: 'Live GPS tracking for transport buses', category: 'admin', isPremium: true, icon: 'MapPin', defaultFor: [] },
 
   // COACHING-SPECIFIC
   { key: 'mod_batches',        name: 'Batch Management',     description: 'Manage coaching batches',                category: 'coaching', isPremium: false, icon: 'Users',        defaultFor: ['coaching'] },

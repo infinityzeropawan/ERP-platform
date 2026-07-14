@@ -20,6 +20,8 @@ import notificationsRoutes from './routes/notifications';
 import paymentsRoutes from './routes/payments';
 import chatRoutes from './routes/chat';
 import aiRoutes from './routes/ai';
+import faceRoutes from './routes/face-attendance';
+import busRoutes from './routes/bus-tracking';
 import { initWebSocketServer } from './services/websocketService';
 import { authenticateToken, injectTenantContext, requireRole } from './middlewares/auth';
 import { requireHttps, sanitizeBody } from './middlewares/security';
@@ -85,6 +87,8 @@ app.use('/api/v1/admin/notifications', notificationsRoutes);
 app.use('/api/v1/payments', paymentsRoutes);
 app.use('/api/v1/chat', authenticateToken, injectTenantContext, chatRoutes);
 app.use('/api/v1/ai', authenticateToken, injectTenantContext, aiRoutes);
+app.use('/api/v1/face', authenticateToken, injectTenantContext, faceRoutes);
+app.use('/api/v1/bus', authenticateToken, injectTenantContext, busRoutes);
 
 // Generic resources endpoint (Must be last to avoid catching specific routes)
 app.use('/api/v1/:resourceName', authenticateToken, injectTenantContext, resourceRoutes);

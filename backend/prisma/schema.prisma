@@ -35,76 +35,85 @@ model Institution {
   email          String?
   website        String?
   address        String?
-  enabledModules String[]        // List of enabled module keys
+  latitude       Float?
+  longitude      Float?
+  geofenceRadius Float           @default(500)
+  enabledModules String[] // List of enabled module keys
   createdAt      DateTime        @default(now())
   updatedAt      DateTime        @updatedAt
 
-  users          User[]
-  gradebooks     GradebookEntry[]
-  diaries        DailyDiary[]
-  messages       ParentMessage[]
-  supportStaff   SupportStaff[]
-  payrolls       StaffPayroll[]
-  attendance     Attendance[]
-  fees           FeeRecord[]
-  timetable      TimetablePeriod[]
-  notices        Notice[]
-  exams          Exam[]
-  leaveRequests  LeaveRequest[]
-  onlineClasses  OnlineClass[]
-  assignments    Assignment[]
-  settings       InstitutionSetting[]
-  syllabus       SyllabusUnit[]
-  feedbacks      FeedbackSubmission[]
-  doubts         Doubt[]
-  doubtReplies   DoubtReply[]
-  onlineExams    OnlineExam[]
-  mcqQuestions   MCQQuestion[]
-  examAttempts   ExamAttempt[]
-  auditLogs      AuditLog[]
-  integrations   IntegrationConfig[]
-  notifLogs      NotificationLog[]
-  payments       PaymentRecord[]
-  chatRooms      ChatRoom[]
+  users              User[]
+  gradebooks         GradebookEntry[]
+  diaries            DailyDiary[]
+  messages           ParentMessage[]
+  supportStaff       SupportStaff[]
+  payrolls           StaffPayroll[]
+  attendance         Attendance[]
+  fees               FeeRecord[]
+  timetable          TimetablePeriod[]
+  notices            Notice[]
+  exams              Exam[]
+  leaveRequests      LeaveRequest[]
+  onlineClasses      OnlineClass[]
+  assignments        Assignment[]
+  settings           InstitutionSetting[]
+  syllabus           SyllabusUnit[]
+  feedbacks          FeedbackSubmission[]
+  doubts             Doubt[]
+  doubtReplies       DoubtReply[]
+  onlineExams        OnlineExam[]
+  mcqQuestions       MCQQuestion[]
+  examAttempts       ExamAttempt[]
+  auditLogs          AuditLog[]
+  integrations       IntegrationConfig[]
+  notifLogs          NotificationLog[]
+  payments           PaymentRecord[]
+  chatRooms          ChatRoom[]
+  faceDescriptors    FaceDescriptor[]
+  faceAttendanceLogs FaceAttendanceLog[]
+  busLocations       BusLocation[]
 }
 
 model User {
-  id              String      @id @default(uuid())
-  name            String
-  email           String      @unique
-  password        String
-  phone           String?
-  role            UserRole    @default(student)
-  joiningDate     DateTime?
-  qualification   String?
-  bloodGroup      String?
-  gender          String?
-  emergencyPhone  String?
-  rollNo          String?
-  class           String?
-  section         String?
-  fatherName      String?
-  motherName      String?
-  dob             DateTime?
-  address         String?
-  busNumber       String?
-  busRoute        String?
-  admissionDate   DateTime?
-  profileColor    String?
-  isApproved      Boolean      @default(true)
+  id             String    @id @default(uuid())
+  name           String
+  email          String    @unique
+  password       String
+  phone          String?
+  role           UserRole  @default(student)
+  joiningDate    DateTime?
+  qualification  String?
+  bloodGroup     String?
+  gender         String?
+  emergencyPhone String?
+  rollNo         String?
+  class          String?
+  section        String?
+  fatherName     String?
+  motherName     String?
+  dob            DateTime?
+  address        String?
+  busNumber      String?
+  busRoute       String?
+  admissionDate  DateTime?
+  profileColor   String?
+  isApproved     Boolean   @default(true)
 
   institutionId   String?
-  institution     Institution? @relation(fields: [institutionId], references: [id], onDelete: Cascade)
+  institution     Institution?   @relation(fields: [institutionId], references: [id], onDelete: Cascade)
   parentId        String?
-  parent          User?        @relation("ParentChildren", fields: [parentId], references: [id], onDelete: SetNull)
-  children        User[]        @relation("ParentChildren")
+  parent          User?          @relation("ParentChildren", fields: [parentId], references: [id], onDelete: SetNull)
+  children        User[]         @relation("ParentChildren")
   refreshTokens   RefreshToken[]
   chatMemberships ChatMember[]
   chatMessages    ChatMessage[]
   aiKey           UserAiKey?
 
-  createdAt       DateTime     @default(now())
-  updatedAt       DateTime     @updatedAt
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+  faceDescriptor     FaceDescriptor?
+  faceAttendanceLogs FaceAttendanceLog[]
+  busLocations       BusLocation[]
 
   @@index([institutionId])
   @@index([institutionId, role])
@@ -112,20 +121,20 @@ model User {
 }
 
 model GradebookEntry {
-  id            String      @id @default(uuid())
-  studentId     String
-  studentName   String
-  subject       String
-  marks         Float
-  examName      String
-  date          DateTime
-  remarks       String?
-  
+  id          String   @id @default(uuid())
+  studentId   String
+  studentName String
+  subject     String
+  marks       Float
+  examName    String
+  date        DateTime
+  remarks     String?
+
   institutionId String
   institution   Institution @relation(fields: [institutionId], references: [id], onDelete: Cascade)
 
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([studentId])
   @@index([institutionId])
@@ -133,72 +142,72 @@ model GradebookEntry {
 }
 
 model DailyDiary {
-  id            String      @id @default(uuid())
-  classId       String
-  className     String
-  section       String
-  subject       String
-  teacherName   String
-  classwork     String
-  homework      String
-  date          DateTime
-  isPublished   Boolean     @default(false)
+  id          String   @id @default(uuid())
+  classId     String
+  className   String
+  section     String
+  subject     String
+  teacherName String
+  classwork   String
+  homework    String
+  date        DateTime
+  isPublished Boolean  @default(false)
 
   institutionId String
   institution   Institution @relation(fields: [institutionId], references: [id], onDelete: Cascade)
 
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([institutionId])
   @@index([institutionId, className, section, date])
 }
 
 model ParentMessage {
-  id            String      @id @default(uuid())
-  teacherId     String
-  studentId     String
-  parentName    String
-  subject       String
-  body          String
-  category      String      // attendance, behavior, academic, fee, general
-  priority      String      // normal, important, urgent
-  isBroadcast   Boolean     @default(false)
-  classId       String?
-  isRead        Boolean     @default(false)
+  id          String  @id @default(uuid())
+  teacherId   String
+  studentId   String
+  parentName  String
+  subject     String
+  body        String
+  category    String // attendance, behavior, academic, fee, general
+  priority    String // normal, important, urgent
+  isBroadcast Boolean @default(false)
+  classId     String?
+  isRead      Boolean @default(false)
 
   institutionId String
   institution   Institution @relation(fields: [institutionId], references: [id], onDelete: Cascade)
 
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([studentId])
   @@index([institutionId])
 }
 
 model SupportStaff {
-  id            String      @id @default(uuid())
-  name          String
-  email         String
-  phone         String
-  role          String      // guard, driver, receptionist, cleaner, accountant, helper
-  joiningDate   DateTime
-  salary        Float
-  isActive      Boolean     @default(true)
-  busNumber     String?
-  shift         String      // morning, evening, night
+  id          String   @id @default(uuid())
+  name        String
+  email       String
+  phone       String
+  role        String // guard, driver, receptionist, cleaner, accountant, helper
+  joiningDate DateTime
+  salary      Float
+  isActive    Boolean  @default(true)
+  busNumber   String?
+  shift       String // morning, evening, night
 
   institutionId String
   institution   Institution @relation(fields: [institutionId], references: [id], onDelete: Cascade)
 
-  createdAt     DateTime    @default(now())
+  createdAt DateTime @default(now())
 
   @@index([institutionId])
 }
 
 model StaffPayroll {
-  id            String      @id @default(uuid())
+  id            String    @id @default(uuid())
   staffId       String
   staffName     String
   role          String
@@ -206,27 +215,27 @@ model StaffPayroll {
   netSalary     Float
   month         String
   year          Int
-  status        String      // paid, pending, processing
+  status        String // paid, pending, processing
   paidOn        DateTime?
-  paymentMethod String?     // bank_transfer, cash, cheque
+  paymentMethod String? // bank_transfer, cash, cheque
 
   institutionId String
   institution   Institution @relation(fields: [institutionId], references: [id], onDelete: Cascade)
 
-  createdAt     DateTime    @default(now())
+  createdAt DateTime @default(now())
 
   @@index([institutionId])
   @@index([institutionId, year, month])
 }
 
 model RefreshToken {
-  id        String   @id @default(uuid())
-  tokenHash String   @unique
+  id        String    @id @default(uuid())
+  tokenHash String    @unique
   userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   expiresAt DateTime
   revokedAt DateTime?
-  createdAt DateTime @default(now())
+  createdAt DateTime  @default(now())
 
   @@index([userId])
   @@index([expiresAt])
@@ -442,7 +451,7 @@ model SyllabusUnit {
 
 model FeedbackSubmission {
   id            String      @id @default(uuid())
-  targetType    String      // teacher, class, subject
+  targetType    String // teacher, class, subject
   targetId      String
   targetName    String
   subjectName   String?
@@ -482,7 +491,7 @@ model DoubtReply {
   doubtId       String
   doubt         Doubt       @relation(fields: [doubtId], references: [id], onDelete: Cascade)
   authorName    String
-  authorRole    String      // teacher, student
+  authorRole    String // teacher, student
   content       String
   isAccepted    Boolean     @default(false)
   institutionId String
@@ -536,7 +545,7 @@ model ExamAttempt {
   examId        String
   exam          OnlineExam  @relation(fields: [examId], references: [id], onDelete: Cascade)
   studentId     String
-  answers       Json        // Key-value of questionId -> chosenIndex
+  answers       Json // Key-value of questionId -> chosenIndex
   score         Float
   passed        Boolean
   institutionId String
@@ -554,10 +563,10 @@ model AuditLog {
   userId        String
   userName      String
   userRole      String
-  action        String      // CREATE, UPDATE, DELETE
-  resource      String      // e.g. Notice, User, Class
+  action        String // CREATE, UPDATE, DELETE
+  resource      String // e.g. Notice, User, Class
   resourceId    String?
-  details       Json?       // changed/created values
+  details       Json? // changed/created values
   institutionId String
   institution   Institution @relation(fields: [institutionId], references: [id], onDelete: Cascade)
   timestamp     DateTime    @default(now())
@@ -572,70 +581,70 @@ model AuditLog {
 
 // --- SCHOOL ---
 model TransportRoute {
-  id            String      @id @default(uuid())
+  id            String   @id @default(uuid())
   routeName     String
   vehicleNumber String
   driverName    String
   driverPhone   String
   stops         String[]
   institutionId String
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }
 
 model Vehicle {
-  id            String      @id @default(uuid())
+  id            String   @id @default(uuid())
   number        String
   capacity      Int
   model         String
   institutionId String
-  createdAt     DateTime    @default(now())
+  createdAt     DateTime @default(now())
 }
 
 model TransportAssignment {
-  id            String      @id @default(uuid())
+  id            String   @id @default(uuid())
   userId        String
   routeId       String
   stopName      String
   monthlyFee    Float
   institutionId String
-  createdAt     DateTime    @default(now())
+  createdAt     DateTime @default(now())
 }
 
 model LibraryBook {
-  id            String      @id @default(uuid())
+  id            String   @id @default(uuid())
   title         String
   author        String
   isbn          String?
   totalCopies   Int
   available     Int
   institutionId String
-  createdAt     DateTime    @default(now())
+  createdAt     DateTime @default(now())
 }
 
 model BookIssue {
-  id            String      @id @default(uuid())
+  id            String    @id @default(uuid())
   bookId        String
   userId        String
-  issueDate     DateTime    @default(now())
+  issueDate     DateTime  @default(now())
   dueDate       DateTime
   returnDate    DateTime?
-  fineAmount    Float       @default(0)
-  status        String      @default("issued") // issued, returned, lost
+  fineAmount    Float     @default(0)
+  status        String    @default("issued") // issued, returned, lost
   institutionId String
 }
 
 model Hostel {
-  id            String      @id @default(uuid())
+  id            String   @id @default(uuid())
   name          String
-  type          String      // boys, girls
+  type          String // boys, girls
   wardenName    String
   institutionId String
-  createdAt     DateTime    @default(now())
+  createdAt     DateTime @default(now())
 }
 
 model HostelRoom {
-  id            String      @id @default(uuid())
+  id            String @id @default(uuid())
   hostelId      String
   roomNumber    String
   capacity      Int
@@ -644,7 +653,7 @@ model HostelRoom {
 }
 
 model HostelAllocation {
-  id            String      @id @default(uuid())
+  id            String    @id @default(uuid())
   roomId        String
   userId        String
   joinDate      DateTime
@@ -655,17 +664,17 @@ model HostelAllocation {
 
 // --- COACHING CENTER ---
 model FeeStructure {
-  id            String      @id @default(uuid())
+  id            String   @id @default(uuid())
   batchName     String
   subject       String
   amount        Float
-  frequency     String      // monthly, one-time
+  frequency     String // monthly, one-time
   institutionId String
-  createdAt     DateTime    @default(now())
+  createdAt     DateTime @default(now())
 }
 
 model StudyMaterial {
-  id            String      @id @default(uuid())
+  id            String   @id @default(uuid())
   title         String
   description   String?
   fileUrl       String
@@ -673,35 +682,35 @@ model StudyMaterial {
   batchName     String?
   uploadedBy    String
   institutionId String
-  createdAt     DateTime    @default(now())
+  createdAt     DateTime @default(now())
 }
 
 model Lead {
-  id            String      @id @default(uuid())
+  id            String    @id @default(uuid())
   studentName   String
   phone         String
   email         String?
-  source        String      // referral, website, walk-in
-  status        String      @default("new") // new, contacted, converted, lost
+  source        String // referral, website, walk-in
+  status        String    @default("new") // new, contacted, converted, lost
   interestedIn  String
   followUpDate  DateTime?
   institutionId String
-  createdAt     DateTime    @default(now())
+  createdAt     DateTime  @default(now())
 }
 
 // --- TUITION CENTER ---
 model SubjectEnrollment {
-  id            String      @id @default(uuid())
+  id            String   @id @default(uuid())
   studentId     String
   subject       String
   teacherId     String
   enrollDate    DateTime
-  status        String      @default("active")
+  status        String   @default("active")
   institutionId String
 }
 
 model HourlyBillingRecord {
-  id            String      @id @default(uuid())
+  id            String   @id @default(uuid())
   studentId     String
   teacherId     String
   subject       String
@@ -709,33 +718,33 @@ model HourlyBillingRecord {
   hours         Float
   ratePerHour   Float
   totalAmount   Float
-  isBilled      Boolean     @default(false)
+  isBilled      Boolean  @default(false)
   institutionId String
-  createdAt     DateTime    @default(now())
+  createdAt     DateTime @default(now())
 }
 
 model DemoClassBooking {
-  id            String      @id @default(uuid())
+  id            String   @id @default(uuid())
   studentName   String
   phone         String
   subject       String
   scheduledAt   DateTime
-  status        String      @default("scheduled") // scheduled, attended, cancelled, converted
+  status        String   @default("scheduled") // scheduled, attended, cancelled, converted
   institutionId String
 }
 
 // --- COLLEGE ---
 model Semester {
-  id            String      @id @default(uuid())
+  id            String   @id @default(uuid())
   name          String
   startDate     DateTime
   endDate       DateTime
-  status        String      @default("upcoming") // upcoming, ongoing, completed
+  status        String   @default("upcoming") // upcoming, ongoing, completed
   institutionId String
 }
 
 model UniversityAffiliation {
-  id            String      @id @default(uuid())
+  id             String   @id @default(uuid())
   universityName String
   affiliationNo  String
   validUntil     DateTime
@@ -743,27 +752,27 @@ model UniversityAffiliation {
 }
 
 model ElectiveCourse {
-  id            String      @id @default(uuid())
+  id            String @id @default(uuid())
   courseCode    String
   courseName    String
   credits       Int
   maxStudents   Int
-  enrolled      Int         @default(0)
+  enrolled      Int    @default(0)
   institutionId String
 }
 
 model ResearchThesis {
-  id            String      @id @default(uuid())
-  studentId     String
-  title         String
-  supervisorId  String
-  status        String      @default("proposed") // proposed, ongoing, submitted, approved
+  id             String    @id @default(uuid())
+  studentId      String
+  title          String
+  supervisorId   String
+  status         String    @default("proposed") // proposed, ongoing, submitted, approved
   submissionDate DateTime?
-  institutionId String
+  institutionId  String
 }
 
 model Alumnus {
-  id            String      @id @default(uuid())
+  id            String  @id @default(uuid())
   userId        String
   passoutYear   Int
   currentJob    String?
@@ -779,8 +788,8 @@ model IntegrationConfig {
   id            String      @id @default(uuid())
   institutionId String
   institution   Institution @relation(fields: [institutionId], references: [id], onDelete: Cascade)
-  provider      String      // sms_msg91 | sms_twilio | whatsapp_twilio | razorpay | stripe
-  encryptedData String      // AES-256-GCM encrypted JSON blob
+  provider      String // sms_msg91 | sms_twilio | whatsapp_twilio | razorpay | stripe
+  encryptedData String // AES-256-GCM encrypted JSON blob
   isActive      Boolean     @default(true)
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
@@ -793,11 +802,11 @@ model NotificationLog {
   id            String      @id @default(uuid())
   institutionId String
   institution   Institution @relation(fields: [institutionId], references: [id], onDelete: Cascade)
-  channel       String      // sms | whatsapp
-  recipient     String      // phone number
+  channel       String // sms | whatsapp
+  recipient     String // phone number
   message       String
   status        String      @default("pending") // pending | sent | failed
-  provider      String      // msg91 | twilio
+  provider      String // msg91 | twilio
   errorMessage  String?
   sentAt        DateTime    @default(now())
 
@@ -811,7 +820,7 @@ model PaymentRecord {
   institution      Institution @relation(fields: [institutionId], references: [id], onDelete: Cascade)
   studentId        String
   feeRecordId      String?
-  gateway          String      // razorpay | stripe
+  gateway          String // razorpay | stripe
   gatewayOrderId   String
   gatewayPaymentId String?
   amount           Float
@@ -830,15 +839,15 @@ model PaymentRecord {
 // REAL-TIME CHAT
 // ─────────────────────────────────────────────────────────────
 model ChatRoom {
-  id            String        @id @default(uuid())
+  id            String      @id @default(uuid())
   institutionId String
-  institution   Institution   @relation(fields: [institutionId], references: [id], onDelete: Cascade)
-  type          String        @default("direct") // direct | group
-  name          String?       // only for group rooms
-  createdAt     DateTime      @default(now())
+  institution   Institution @relation(fields: [institutionId], references: [id], onDelete: Cascade)
+  type          String      @default("direct") // direct | group
+  name          String? // only for group rooms
+  createdAt     DateTime    @default(now())
 
-  members       ChatMember[]
-  messages      ChatMessage[]
+  members  ChatMember[]
+  messages ChatMessage[]
 
   @@index([institutionId])
 }
@@ -878,10 +887,67 @@ model ChatMessage {
 model UserAiKey {
   id           String   @id @default(uuid())
   userId       String   @unique
-  provider     String   // gemini | openai
-  encryptedKey String   // AES-256-GCM encrypted
+  provider     String // gemini | openai
+  encryptedKey String // AES-256-GCM encrypted
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// ─────────────────────────────────────────────────────────────
+// FACE RECOGNITION ATTENDANCE (PREMIUM)
+// ─────────────────────────────────────────────────────────────
+model FaceDescriptor {
+  id            String   @id @default(uuid())
+  userId        String   @unique
+  descriptor    Float[] // 128-d float array from face-api.js
+  institutionId String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  institution Institution @relation(fields: [institutionId], references: [id], onDelete: Cascade)
+
+  @@index([institutionId])
+}
+
+model FaceAttendanceLog {
+  id              String   @id @default(uuid())
+  userId          String
+  institutionId   String
+  date            DateTime
+  status          String   @default("present")
+  confidenceScore Float
+  latitude        Float?
+  longitude       Float?
+  verified        Boolean  @default(false)
+  createdAt       DateTime @default(now())
+
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  institution Institution @relation(fields: [institutionId], references: [id], onDelete: Cascade)
+
+  @@index([institutionId, date])
+  @@index([institutionId, userId])
+}
+
+// ─────────────────────────────────────────────────────────────
+// BUS GPS LIVE TRACKING (PREMIUM)
+// ─────────────────────────────────────────────────────────────
+model BusLocation {
+  id            String   @id @default(uuid())
+  driverId      String
+  institutionId String
+  latitude      Float
+  longitude     Float
+  accuracy      Float?
+  speed         Float?
+  heading       Float?
+  timestamp     DateTime @default(now())
+
+  driver      User        @relation(fields: [driverId], references: [id], onDelete: Cascade)
+  institution Institution @relation(fields: [institutionId], references: [id], onDelete: Cascade)
+
+  @@index([institutionId, timestamp])
+  @@index([driverId, timestamp])
 }

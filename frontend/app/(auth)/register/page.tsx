@@ -63,7 +63,7 @@ export default function RegisterPage() {
   };
 
   const Field = ({ label, name, type = 'text', placeholder, icon: Icon }: { label: string; name: string; type?: string; placeholder: string; icon: React.ElementType }) => (
-    <div>
+    <div key={name}>
       <label className="block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wide">{label}</label>
       <div className="relative">
         <Icon className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
@@ -98,10 +98,10 @@ export default function RegisterPage() {
           <div className="p-8">
             {step === 1 ? (
               <div className="space-y-4">
-                <Field label="Full Name" name="name" placeholder="Enter your full name" icon={User} />
-                <Field label="Email Address" name="email" type="email" placeholder="your@email.com" icon={Mail} />
-                <Field label="Phone Number" name="phone" placeholder="10-digit mobile number" icon={Phone} />
-                <Field label="Date of Birth" name="dob" type="date" placeholder="" icon={Calendar} />
+                {Field({ label: "Full Name", name: "name", placeholder: "Enter your full name", icon: User })}
+                {Field({ label: "Email Address", name: "email", type: "email", placeholder: "your@email.com", icon: Mail })}
+                {Field({ label: "Phone Number", name: "phone", placeholder: "10-digit mobile number", icon: Phone })}
+                {Field({ label: "Date of Birth", name: "dob", type: "date", placeholder: "", icon: Calendar })}
                 <div>
                   <label className="block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wide">Gender</label>
                   <select value={form.gender} onChange={e => set('gender', e.target.value)}
@@ -118,10 +118,10 @@ export default function RegisterPage() {
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4">
-                <Field label="Institution Code (Slug) *" name="institutionSlug" placeholder="e.g. sch-greenwood" icon={Landmark} />
-                <Field label="Father's Name" name="fatherName" placeholder="Father's full name" icon={User} />
-                <Field label="Mother's Name" name="motherName" placeholder="Mother's full name" icon={User} />
-                <Field label="Address" name="address" placeholder="Full residential address" icon={MapPin} />
+                {Field({ label: "Institution Code (Slug) *", name: "institutionSlug", placeholder: "e.g. sch-greenwood", icon: Landmark })}
+                {Field({ label: "Father's Name", name: "fatherName", placeholder: "Father's full name", icon: User })}
+                {Field({ label: "Mother's Name", name: "motherName", placeholder: "Mother's full name", icon: User })}
+                {Field({ label: "Address", name: "address", placeholder: "Full residential address", icon: MapPin })}
                 <div className="grid grid-cols-3 gap-3">
                   <div>
                     <label className="block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wide">Blood Group</label>

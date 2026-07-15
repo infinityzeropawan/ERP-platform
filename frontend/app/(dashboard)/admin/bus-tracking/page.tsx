@@ -126,7 +126,7 @@ export default function AdminBusTrackingPage() {
                       <div className="text-xs mt-1">📞 {loc.driver.phone}</div>
                     )}
                     <div className="text-xs mt-2 pt-2 border-t font-mono">
-                      Speed: {loc.speed !== null ? \`\${Math.round(loc.speed * 3.6)} km/h\` : 'N/A'}<br/>
+                      Speed: {loc.speed !== null ? `${Math.round(loc.speed * 3.6)} km/h` : 'N/A'}<br/>
                       Last seen: {new Date(loc.timestamp).toLocaleTimeString()}
                     </div>
                   </Popup>

@@ -117,7 +117,7 @@ export default function AdminFaceAttendanceLogs() {
                         <div className="w-16 h-2 bg-gray-200 rounded-full overflow-hidden">
                           <div 
                             className={`h-full ${log.confidenceScore > 80 ? 'bg-green-500' : 'bg-amber-500'}`} 
-                            style={{ width: \`\${Math.min(100, log.confidenceScore)}%\` }}
+                            style={{ width: `${Math.min(100, log.confidenceScore)}%` }}
                           />
                         </div>
                         <span className="text-sm font-medium">{log.confidenceScore.toFixed(0)}%</span>

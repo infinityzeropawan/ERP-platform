@@ -89,10 +89,10 @@ export default function LoginPage() {
         <div className="bg-white rounded-2xl shadow-2xl overflow-hidden">
           {/* Tabs */}
           <div className="flex border-b border-gray-100">
-            <button onClick={() => { setTab('staff'); setError(''); }} className={`flex-1 py-3.5 text-sm font-semibold transition-all ${tab === 'staff' ? 'bg-slate-900 text-white' : 'text-gray-500 hover:bg-gray-50'}`}>
+            <button type="button" onClick={() => { setTab('staff'); setError(''); }} className={`flex-1 py-3.5 text-sm font-semibold transition-all ${tab === 'staff' ? 'bg-slate-900 text-white' : 'text-gray-500 hover:bg-gray-50'}`}>
               Staff Login
             </button>
-            <button onClick={() => { setTab('student'); setError(''); }} className={`flex-1 py-3.5 text-sm font-semibold transition-all ${tab === 'student' ? 'bg-slate-900 text-white' : 'text-gray-500 hover:bg-gray-50'}`}>
+            <button type="button" onClick={() => { setTab('student'); setError(''); }} className={`flex-1 py-3.5 text-sm font-semibold transition-all ${tab === 'student' ? 'bg-slate-900 text-white' : 'text-gray-500 hover:bg-gray-50'}`}>
               Student Login
             </button>
           </div>

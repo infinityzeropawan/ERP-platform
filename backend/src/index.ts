@@ -56,11 +56,11 @@ app.use('/uploads', express.static(path.join(__dirname, '../public/uploads')));
 app.use('/api/v1/payments/webhook', express.raw({ type: 'application/json' }));
 
 const authLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
+  windowMs: 1 * 60 * 1000,
   limit: process.env.NODE_ENV === 'production' ? 20 : 10000,
   standardHeaders: 'draft-8',
   legacyHeaders: false,
-  message: { error: 'TooManyRequests', message: 'Too many authentication attempts. Try again later.' },
+  message: { error: 'TooManyRequests', message: 'Too many authentication attempts. Please wait 1 minute before trying again.' },
 });
 app.use('/api/v1/auth/register', authLimiter);
 

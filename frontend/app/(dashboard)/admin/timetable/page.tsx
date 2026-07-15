@@ -13,7 +13,7 @@ const DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 interface TimetableItem {
   id: string;
   name: string;
-  timee: string;
+  time: string;
   subject: string;
   subjectCode: string;
   class: string;

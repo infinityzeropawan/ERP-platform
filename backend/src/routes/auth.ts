@@ -55,7 +55,7 @@ function presentedRefreshToken(req: AuthenticatedRequest) {
 router.post('/register', async (req: AuthenticatedRequest, res: Response) => {
   const {
     name, email, phone, dob, gender, fatherName, motherName,
-    address, bloodGroup, class: className, password, institutionSlug
+    address, bloodGroup, class: className, section, password, institutionSlug
   } = req.body;
 
   if (!email || !password || !name || !institutionSlug) {
@@ -105,6 +105,7 @@ router.post('/register', async (req: AuthenticatedRequest, res: Response) => {
         address,
         bloodGroup,
         class: className || null,
+        section: section || null,
         password: hashedPassword,
         role: 'student',
         isApproved: false, // REQUIRES ADMIN APPROVAL

@@ -188,6 +188,17 @@ export default function LoginPage() {
                 >
                   {loading ? <><div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />Signing in...</> : 'Sign In →'}
                 </button>
+                
+                {tab === 'student' && (
+                  <div className="text-center mt-3">
+                    <p className="text-xs text-gray-500">
+                      New student?{' '}
+                      <a href="/register" className={`font-semibold ${themeColors.text} hover:underline`}>
+                        Apply for Admission
+                      </a>
+                    </p>
+                  </div>
+                )}
               </form>
             )}
           </div>

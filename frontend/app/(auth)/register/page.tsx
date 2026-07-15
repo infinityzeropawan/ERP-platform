@@ -10,7 +10,7 @@ export default function RegisterPage() {
   const [form, setForm] = useState({
     name: '', email: '', phone: '', dob: '', gender: '',
     fatherName: '', motherName: '', address: '', bloodGroup: '',
-    class: '', password: '', confirmPassword: '', institutionSlug: ''
+    class: '', section: '', password: '', confirmPassword: '', institutionSlug: ''
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -122,7 +122,7 @@ export default function RegisterPage() {
                 <Field label="Father's Name" name="fatherName" placeholder="Father's full name" icon={User} />
                 <Field label="Mother's Name" name="motherName" placeholder="Mother's full name" icon={User} />
                 <Field label="Address" name="address" placeholder="Full residential address" icon={MapPin} />
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-3 gap-3">
                   <div>
                     <label className="block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wide">Blood Group</label>
                     <select value={form.bloodGroup} onChange={e => set('bloodGroup', e.target.value)}
@@ -133,13 +133,14 @@ export default function RegisterPage() {
                   </div>
                   <div>
                     <label className="block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wide">Class</label>
-                    <select value={form.class} onChange={e => set('class', e.target.value)}
-                      className={`w-full h-11 px-3 rounded-xl border text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 bg-gray-50 ${errors.class ? 'border-red-300' : 'border-gray-200'}`}>
-                      <option value="">Select</option>
-                      <option value="Class-X">Class-X</option>
-                      <option value="Class-XI">Class-XI</option>
-                    </select>
+                    <input type="text" value={form.class} onChange={e => set('class', e.target.value)} placeholder="e.g. 10th"
+                      className={`w-full h-11 px-3 rounded-xl border text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 bg-gray-50 ${errors.class ? 'border-red-300' : 'border-gray-200'}`} />
                     {errors.class && <p className="text-xs text-red-500 mt-1">{errors.class}</p>}
+                  </div>
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-600 mb-1.5 uppercase tracking-wide">Section</label>
+                    <input type="text" value={form.section} onChange={e => set('section', e.target.value)} placeholder="e.g. A"
+                      className="w-full h-11 px-3 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 bg-gray-50" />
                   </div>
                 </div>
                 <div>

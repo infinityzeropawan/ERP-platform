@@ -55,13 +55,30 @@ router.post('/institutions', async (req: AuthenticatedRequest, res: Response) =>
     const defaultModulesList = DEFAULT_MODULES[resolvedType as keyof typeof DEFAULT_MODULES] || [];
 
     const hashedPassword = await bcrypt.hash(adminPassword, 10);
+    
+    // Generate a 5-letter unique uppercase alphanumeric code
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let code = '';
+    for (let i = 0; i < 5; i++) {
+      code += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
 
     // Create transaction: Onboard institution and seed its Admin User account
     const result = await prisma.$transaction(async (tx) => {
+      // Check if generated code happens to collide (extremely rare, but good practice)
+      let uniqueCode = code;
+      while (await tx.institution.findUnique({ where: { code: uniqueCode } })) {
+        uniqueCode = '';
+        for (let i = 0; i < 5; i++) {
+          uniqueCode += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+      }
+
       const inst = await tx.institution.create({
         data: {
           name,
           slug,
+          code: uniqueCode,
           type: resolvedType,
           plan: plan || 'basic',
           status: 'active',

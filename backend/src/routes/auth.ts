@@ -55,10 +55,10 @@ function presentedRefreshToken(req: AuthenticatedRequest) {
 router.post('/register', async (req: AuthenticatedRequest, res: Response) => {
   const {
     name, email, phone, dob, gender, fatherName, motherName,
-    address, bloodGroup, class: className, section, password, institutionSlug
+    address, bloodGroup, class: className, section, password, institutionCode
   } = req.body;
 
-  if (!email || !password || !name || !institutionSlug) {
+  if (!email || !password || !name || !institutionCode) {
     return res.status(400).json({ error: 'ValidationError', message: 'Name, email, password, and institution code are required.' });
   }
 
@@ -71,9 +71,9 @@ router.post('/register', async (req: AuthenticatedRequest, res: Response) => {
   }
 
   try {
-    // 1. Resolve institution by slug
+    // 1. Resolve institution by 5-letter code
     const institution = await prisma.institution.findUnique({
-      where: { slug: institutionSlug }
+      where: { code: institutionCode }
     });
 
     if (!institution) {
@@ -110,11 +110,11 @@ router.post('/register', async (req: AuthenticatedRequest, res: Response) => {
         role: 'student',
         isApproved: false, // REQUIRES ADMIN APPROVAL
         institutionId: institution.id,
-        rollNo: 'TEMP-' + Math.floor(1000 + Math.random() * 9000)
+        rollNo: `STU-${institution.code}-${Math.floor(1000 + Math.random() * 9000)}`
       }
     });
 
-    return res.status(201).json({ message: 'Registration submitted successfully. Pending admin approval.', userId: student.id });
+    return res.status(201).json({ message: 'Registration submitted successfully. Pending admin approval.', studentId: student.rollNo });
   } catch (error: any) {
     console.error('Student registration exception:', error);
     return res.status(500).json({ error: 'InternalError', message: error.message });

@@ -28,6 +28,7 @@ model Institution {
   id             String          @id @default(uuid())
   name           String
   slug           String          @unique
+  code           String          @unique @default("TEMP1")
   type           InstitutionType @default(school)
   plan           String          @default("basic") // basic, pro, enterprise
   status         String          @default("active") // active, trial, suspended

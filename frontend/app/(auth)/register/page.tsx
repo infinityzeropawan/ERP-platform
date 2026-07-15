@@ -8,9 +8,8 @@ export default function RegisterPage() {
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
-    name: '', email: '', phone: '', dob: '', gender: '',
-    fatherName: '', motherName: '', address: '', bloodGroup: '',
-    class: '', section: '', password: '', confirmPassword: '', institutionSlug: ''
+    name: '', email: '', phone: '', dob: '', gender: 'male', fatherName: '', motherName: '',
+    address: '', bloodGroup: 'O+', class: '', section: '', password: '', confirmPassword: '', institutionCode: ''
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -29,7 +28,7 @@ export default function RegisterPage() {
 
   const validate2 = () => {
     const e: Record<string, string> = {};
-    if (!form.institutionSlug.trim()) e.institutionSlug = 'Institution Code is required';
+    if (!form.institutionCode.trim()) e.institutionCode = 'Institution Code is required';
     if (!form.fatherName.trim()) e.fatherName = 'Required';
     if (!form.address.trim()) e.address = 'Required';
     if (!form.class) e.class = 'Required';
@@ -53,7 +52,9 @@ export default function RegisterPage() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to submit registration');
 
-      alert('Registration submitted successfully!');
+      if (data.studentId) {
+        alert(`Registration successful! Your Student ID is: ${data.studentId}\nPlease save this ID for your records.`);
+      }
       router.push('/pending');
     } catch (err: any) {
       alert(err.message || 'Registration failed');
@@ -118,7 +119,7 @@ export default function RegisterPage() {
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4">
-                {Field({ label: "Institution Code (Slug) *", name: "institutionSlug", placeholder: "e.g. sch-greenwood", icon: Landmark })}
+                {Field({ label: "5-Letter Institution Code *", name: "institutionCode", placeholder: "e.g. A7X9K", icon: Landmark })}
                 {Field({ label: "Father's Name", name: "fatherName", placeholder: "Father's full name", icon: User })}
                 {Field({ label: "Mother's Name", name: "motherName", placeholder: "Mother's full name", icon: User })}
                 {Field({ label: "Address", name: "address", placeholder: "Full residential address", icon: MapPin })}

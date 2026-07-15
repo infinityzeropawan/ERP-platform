@@ -71,7 +71,7 @@ export default function SuperadminLoginPage() {
             <div>
               <label className="block text-[10px] font-bold text-gray-600 mb-1.5 uppercase tracking-wide">Admin Identity / Email</label>
               <input 
-                type="email" 
+                type="text" 
                 value={email} 
                 onChange={e => setEmail(e.target.value)} 
                 placeholder="superadmin@buildroonix.com"

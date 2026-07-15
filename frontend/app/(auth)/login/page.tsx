@@ -115,7 +115,7 @@ export default function LoginPage() {
                 <div>
                   <label className="block text-[10px] font-bold text-gray-600 mb-1.5 uppercase tracking-wide">Email Address</label>
                   <input 
-                    type="email" 
+                    type="text" 
                     value={email} 
                     onChange={e => setEmail(e.target.value)} 
                     placeholder="name@buildroonix.com"
@@ -156,7 +156,7 @@ export default function LoginPage() {
                 <div>
                   <label className="block text-[10px] font-bold text-gray-600 mb-1.5 uppercase tracking-wide">Email Address</label>
                   <input
-                    type="email"
+                    type="text"
                     value={email}
                     onChange={e => setEmail(e.target.value)}
                     placeholder="student@school.com"
